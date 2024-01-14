@@ -46,6 +46,7 @@ export const search = {
   // using ISO 3166 alpha 2 country codes separated by commas.
   // If you want to limit the autocomplete, uncomment this value:
   // countryLimit: ['AU'],
+  countryLimit: ['CH']
 };
 
 // When fuzzy locations are enabled, coordinates on maps are
