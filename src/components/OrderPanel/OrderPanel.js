@@ -18,7 +18,11 @@ import classNames from 'classnames';
 import omit from 'lodash/omit';
 
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
-import { displayPrice } from '../../util/configHelpers';
+import {
+  displayDeliveryPickup,
+  displayDeliveryShipping,
+  displayPrice,
+} from '../../util/configHelpers';
 import {
   propTypes,
   LISTING_STATE_CLOSED,
@@ -26,6 +30,8 @@ import {
   LINE_ITEM_DAY,
   LINE_ITEM_ITEM,
   LINE_ITEM_HOUR,
+  STOCK_MULTIPLE_ITEMS,
+  STOCK_INFINITE_MULTIPLE_ITEMS,
 } from '../../util/types';
 import { formatMoney } from '../../util/currency';
 import { parse, stringify } from '../../util/urlHelpers';
@@ -176,10 +182,11 @@ const OrderPanel = props => {
     marketplaceName,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    payoutDetailsWarning,
   } = props;
 
   const publicData = listing?.attributes?.publicData || {};
-  const { unitType, transactionProcessAlias = '' } = publicData || {};
+  const { listingType, unitType, transactionProcessAlias = '' } = publicData || {};
   const processName = resolveLatestProcessName(transactionProcessAlias.split('/')[0]);
   const lineItemUnitType = lineItemUnitTypeMaybe || `line-item/${unitType}`;
 
@@ -230,6 +237,13 @@ const OrderPanel = props => {
   const isKnownProcess = supportedProcessesInfo.map(info => info.name).includes(processName);
 
   const { pickupEnabled, shippingEnabled } = listing?.attributes?.publicData || {};
+
+  const listingTypeConfig = validListingTypes.find(conf => conf.listingType === listingType);
+  const displayShipping = displayDeliveryShipping(listingTypeConfig);
+  const displayPickup = displayDeliveryPickup(listingTypeConfig);
+  const allowOrdersOfMultipleItems = [STOCK_MULTIPLE_ITEMS, STOCK_INFINITE_MULTIPLE_ITEMS].includes(
+    listingTypeConfig?.stockType
+  );
 
   const showClosedListingHelpText = listing.id && isClosed;
   const isOrderOpen = !!parse(location.search).orderOpen;
@@ -306,6 +320,7 @@ const OrderPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            payoutDetailsWarning={payoutDetailsWarning}
           />
         ) : showBookingDatesForm ? (
           <BookingDatesForm
@@ -326,6 +341,7 @@ const OrderPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            payoutDetailsWarning={payoutDetailsWarning}
           />
         ) : showProductOrderForm ? (
           <ProductOrderForm
@@ -334,8 +350,10 @@ const OrderPanel = props => {
             price={price}
             marketplaceCurrency={marketplaceCurrency}
             currentStock={currentStock}
-            pickupEnabled={pickupEnabled}
-            shippingEnabled={shippingEnabled}
+            allowOrdersOfMultipleItems={allowOrdersOfMultipleItems}
+            pickupEnabled={pickupEnabled && displayPickup}
+            shippingEnabled={shippingEnabled && displayShipping}
+            displayDeliveryMethod={displayPickup || displayShipping}
             listingId={listing.id}
             isOwnListing={isOwnListing}
             marketplaceName={marketplaceName}
@@ -344,6 +362,7 @@ const OrderPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            payoutDetailsWarning={payoutDetailsWarning}
           />
         ) : showInquiryForm ? (
           <InquiryWithoutPaymentForm formId="OrderPanelInquiryForm" onSubmit={onSubmit} />
@@ -401,6 +420,7 @@ OrderPanel.defaultProps = {
   titleClassName: null,
   isOwnListing: false,
   authorLink: null,
+  payoutDetailsWarning: null,
   titleDesktop: null,
   subTitle: null,
   monthlyTimeSlots: null,
@@ -426,6 +446,7 @@ OrderPanel.propTypes = {
   isOwnListing: bool,
   author: oneOfType([propTypes.user, propTypes.currentUser]).isRequired,
   authorLink: node,
+  payoutDetailsWarning: node,
   onSubmit: func.isRequired,
   title: oneOfType([node, string]).isRequired,
   titleDesktop: node,

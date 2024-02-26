@@ -12,9 +12,94 @@ way to update this template, but currently, we follow a pattern:
 
 ---
 
-## Upcoming version 2023-XX-XX
+## Upcoming version 2024-XX-XX
 
-- [fix] AuthenticationPage/lodash: do not import the whole library. 
+## [v4.1.0] 2024-02-26
+
+- [add] new component CustomLinksMenu added to the Topbar. It shows custom links if there's enough
+  space available, or adds a new menu component that includes those links in a dropdown list.
+  [#320](https://github.com/sharetribe/web-template/pull/320)
+- [add] Mention Sharetribe Experts in the README.md
+  [#332](https://github.com/sharetribe/web-template/pull/332)
+- [fix] AuthenticationPage: fix mobile layout issue when content was too long
+  [#330](https://github.com/sharetribe/web-template/pull/330)
+- [add] Update translations for de.json, es.json, and fr.json.
+  [#328](https://github.com/sharetribe/web-template/pull/328)
+- [change] Update social login button labels to be aligned with branding guides
+  [#327](https://github.com/sharetribe/web-template/pull/327)
+- [fix] Show an error message on authentication page in case identity provider authentication fails
+  [#326](https://github.com/sharetribe/web-template/pull/326)
+- [change] Upgrade Sharetribe SDK to 1.20.1
+  [#326](https://github.com/sharetribe/web-template/pull/326)
+- [change] Update the copy of TransactionPage.default-purchase.customer.purchased.extraInfo
+  [#323](https://github.com/sharetribe/web-template/pull/323)
+- [add] PageBuilder/SectionContainer: break long words (e.g. links) so that mobile layout does not
+  break. [#322](https://github.com/sharetribe/web-template/pull/322)
+- [change] OrderBreakdown: ensure that only those line-items are shown that have been included for
+  the currentUser's role (customer vs provider).
+  [#321](https://github.com/sharetribe/web-template/pull/321)
+- [fix] A listing using the inquiry transaction process should not show the payout details warning
+  to the user. [#319](https://github.com/sharetribe/web-template/pull/319)
+- [add] Update translations for de.json, es.json, and fr.json.
+  [#317](https://github.com/sharetribe/web-template/pull/317)
+- [fix] When delivery method is not set, it's still better to maintain the value as string, because
+  it's used as an argument in translations.
+  [#316](https://github.com/sharetribe/web-template/pull/316)
+
+  [v4.1.0]: https://github.com/sharetribe/web-template/compare/v4.0.0...v4.1.0
+
+## [v4.0.0] 2024-02-07
+
+Breaking change: if you have customized your transaction process, you need to update the email
+templates. The new customer commission (#293) adds changes to emails that contain a receipt aka
+order breakdown information. In addition, also PR 310 touches the email templates.
+
+This also prepares the codebase for future configuration possibilities:
+
+- Postponing the requirement for a provider to give payout details (but it is still needed)
+- Makes certain listing features optional (location, delivery method)
+- Adds infinity stock (It is just emulated through a big number 10^15)
+
+- [add] Update de.json asset. [#313](https://github.com/sharetribe/web-template/pull/313)
+- [add] Update fr.json asset. [#311](https://github.com/sharetribe/web-template/pull/311)
+- [add] Update translation assets for German, French, and Spanish.
+  [#309](https://github.com/sharetribe/web-template/pull/309)
+- [change] Update default email templates (no need to use triple handlebars anymore).
+  [#310](https://github.com/sharetribe/web-template/pull/310)
+- [add] Add stock types: infiniteOneItem and infiniteMultipleItems (faked through 10^15)
+  [#299](https://github.com/sharetribe/web-template/pull/299)
+- [change] Make location and delivery method configurable on EditListingWizard. This just prepares
+  the codebase for an upcoming feature, when the configuration is ready on Console.
+  [#298](https://github.com/sharetribe/web-template/pull/298)
+- [change] Make the requirement of payout details configurable on EditListingWizard. This just
+  prepares the codebase for an upcoming feature, when the configuration is ready on Console.
+  [#297](https://github.com/sharetribe/web-template/pull/297)
+- [fix] The destructuring of undefined commissionAsset can't be against null.
+  [#308](https://github.com/sharetribe/web-template/pull/308)
+- [change] Allow distinguishing customer and provider commission translations in OrderBreakdown and
+  email templates [#307](https://github.com/sharetribe/web-template/pull/307)
+- [change] Add environment variable REACT_APP_MARKETPLACE_NAME and add code-comments to built-in
+  configs about hosted configs, which might overwrite them. Check that the line doesn't use
+  'Biketribe' if you take update from the upstream!
+  [#305](https://github.com/sharetribe/web-template/pull/305)
+- [change] Updated a small patch of outdated libraries: express, body-parser, moment,
+  moment-timezone, helmet, nodemon, decimal.js, concurrently, classnames, jose, passport
+  [#304](https://github.com/sharetribe/web-template/pull/304)
+- [add] CSP: add new rules: _.analytics.google.com and _.giphy.com
+  [#303](https://github.com/sharetribe/web-template/pull/303)
+- [change] Fetch customer commission from assets and add handling. This update introduces changes to
+  the transaction process email templates, so the transaction process needs to be updated in
+  Sharetribe backend. [#293](https://github.com/sharetribe/web-template/pull/293)
+- [change] ext/ directory: update email translation defaults for no-delivery-method scenario.
+  [#292](https://github.com/sharetribe/web-template/pull/292)
+- [change] Code-split FieldDateInput, FieldDateRangeInput, FieldDateRangeController. The consequence
+  is that react-dates library is code-splitted too.
+  [#290](https://github.com/sharetribe/web-template/pull/290)
+- [change] Move IconCard under SaveCardDetails (might be code-splitted later).
+  [#283](https://github.com/sharetribe/web-template/pull/283)
+- [change] Code-split Topbar component and move it under TopbarContainer.
+  [#282](https://github.com/sharetribe/web-template/pull/282)
+- [fix] AuthenticationPage/lodash: do not import the whole library.
   [#288](https://github.com/sharetribe/web-template/pull/288)
 - [change] PageBuilder/YoutubeEmbed: add rel=0 search param (related videos only from same channel).
   This also adds width and height to iframe element.
@@ -23,6 +108,8 @@ way to update this template, but currently, we follow a pattern:
   [#284](https://github.com/sharetribe/web-template/pull/284)
 - [fix] Add missing imports to an email template file
   [#279](https://github.com/sharetribe/web-template/pull/279)
+
+  [v4.0.0]: https://github.com/sharetribe/web-template/compare/v3.5.0...v4.0.0
 
 ## [v3.5.0] 2023-12-12
 

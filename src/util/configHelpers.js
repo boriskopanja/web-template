@@ -587,6 +587,22 @@ export const displayPrice = listingTypeConfig => {
   return listingTypeConfig?.defaultListingFields?.price !== false;
 };
 
+export const displayLocation = listingTypeConfig => {
+  return listingTypeConfig?.defaultListingFields?.location !== false;
+};
+
+export const displayDeliveryPickup = listingTypeConfig => {
+  return listingTypeConfig?.defaultListingFields?.pickup !== false;
+};
+
+export const displayDeliveryShipping = listingTypeConfig => {
+  return listingTypeConfig?.defaultListingFields?.shipping !== false;
+};
+
+export const requirePayoutDetails = listingTypeConfig => {
+  return listingTypeConfig?.defaultListingFields?.payoutDetails !== false;
+};
+
 ///////////////////////////////////////
 // Restructure hosted listing config //
 ///////////////////////////////////////
@@ -927,6 +943,13 @@ export const mergeConfig = (configAsset = {}, defaultConfigs = {}) => {
     googleSearchConsole: configAsset.googleSearchConsole?.googleSiteVerification
       ? configAsset.googleSearchConsole
       : defaultConfigs.googleSearchConsole,
+
+    // The top-bar.json asset contains logo link and custom links
+    // - The logo link can be used to link logo to another domain
+    // - Custom links are links specified by marketplace operator (both internal and external)
+    //   - Topbar tries to fit primary links to the visible space,
+    //     but secondary links are always behind dropdown menu.
+    topbar: configAsset.topbar, // defaultConfigs.topbar,
 
     // Include hosted footer config, if it exists
     // Note: if footer asset is not set, Footer is not rendered.
